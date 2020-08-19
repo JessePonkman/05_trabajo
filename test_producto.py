@@ -36,10 +36,15 @@ class TestProducto(unittest.TestCase):
         self.assertDictEqual(Repositorios.productosList[productoKey],
                              producto. __dict__)
 
+    @parameterized.expand([
+        ("HP Omen", 790000, 'computadoras')
+    ])
     # Eliminar un producto
-    def test_delete_producto(self):
-        ProductoService().delete_producto(0)
-        self.assertEqual(Repositorios.productosList.get(0), None)
+    def test_delete_producto(self, descripcion, precio, tipo):
+        producto = Producto(descripcion, precio, tipo)
+        key = ProductoService().add_producto(producto)
+        ProductoService().delete_producto(key)
+        self.assertEqual(Repositorios.productosList.get(key), None)
         print(ProductoService().get_productosList())
 
     @parameterized.expand([
